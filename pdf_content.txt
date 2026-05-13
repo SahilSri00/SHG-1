@@ -1,0 +1,31 @@
+83 
+82 
+Android App Development using GenAI - Mahila-Shakti Unnati 
+(Micro-Finance) 
+ 
+1. The Problem Statement: 
+Self-Help Groups (SHGs) are vital but rely on physical registers. Tracking weekly savings and interest 
+is error-prone, leading to disputes. 
+2. Detailed Description (The Vision) 
+Mahila-Shakti Unnati is a digital ledger for women’s SHGs. It acts as a "Digital Accountant," tracking 
+contribution history and calculating group capital and loan eligibility. 
+3. App Usage & User Flow 
+● Member Directory: Add members with photos and details. 
+● Savings Entry: Mark weekly "Paid" or "Pending." 
+● Loan Tracker: Track repayments and interest. 
+ 
+4. Technical Implementation & Hints 
+● Database: Use Room DB with relations (One member to many savings entries). 
+● Logic: Use Kotlin to calculate simple interest or group totals. 
+● Export: Allow sharing a summary via WhatsApp (Intent sharing). 
+ 
+5. Impact Goals 
+● Women’s Empowerment: Providing rural women with digital tools to manage their own capital. 
+● Financial Literacy: Teaching the basics of credit scores and interest via the app. 
+● Transparency: Eliminating trust issues within community savings groups. 
+ 
+6. Success Criteria for Students 
+● Total savings must update instantly when a new entry is added. 
+● The app must prevent a loan from being recorded if the member has an existing unpaid loan. 
+● Data must be exportable as a clean text string. 
+● Database migrations must be handled correctly. 
