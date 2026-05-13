@@ -24,7 +24,7 @@ jobs:
       uses: gradle/actions/setup-gradle@v3
       with:
         # Using a specific gradle version if gradlew is missing
-        gradle-version: '8.4' 
+        gradle-version: '8.9' 
 
     - name: Build with Gradle
       run: gradle assembleDebug
