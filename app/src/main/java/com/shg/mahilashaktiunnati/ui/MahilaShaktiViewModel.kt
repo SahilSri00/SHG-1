@@ -75,6 +75,14 @@ class MahilaShaktiViewModel(
                 messageFlow.value = "Member name is required."
                 return@launch
             }
+            if (!phone.matches(Regex("^\\d{10}$"))) {
+                messageFlow.value = "Phone number must be exactly 10 digits."
+                return@launch
+            }
+            if (address.isBlank()) {
+                messageFlow.value = "Address is required."
+                return@launch
+            }
             repository.addMember(name, phone, address, photoUri)
             messageFlow.value = "Member added."
         }
@@ -82,8 +90,12 @@ class MahilaShaktiViewModel(
 
     fun addSavings(memberId: Long, weekLabel: String, amount: Double, isPaid: Boolean) {
         viewModelScope.launch {
-            if (weekLabel.isBlank() || amount <= 0.0) {
-                messageFlow.value = "Week label and positive amount are required."
+            if (weekLabel.isBlank()) {
+                messageFlow.value = "Week label is required."
+                return@launch
+            }
+            if (amount <= 0.0) {
+                messageFlow.value = "Savings amount must be positive."
                 return@launch
             }
             repository.addSavings(memberId, weekLabel, amount, isPaid)
@@ -93,8 +105,12 @@ class MahilaShaktiViewModel(
 
     fun createLoan(memberId: Long, principal: Double, interestRatePercent: Double) {
         viewModelScope.launch {
-            if (principal <= 0.0 || interestRatePercent < 0.0) {
-                messageFlow.value = "Principal must be positive and rate cannot be negative."
+            if (principal <= 0.0) {
+                messageFlow.value = "Principal must be a positive number."
+                return@launch
+            }
+            if (interestRatePercent < 0.0) {
+                messageFlow.value = "Interest rate cannot be negative."
                 return@launch
             }
             val result = repository.createLoan(memberId, principal, interestRatePercent)
@@ -107,6 +123,14 @@ class MahilaShaktiViewModel(
             if (amount <= 0.0) {
                 messageFlow.value = "Repayment amount must be positive."
                 return@launch
+            }
+            val currentLoan = uiState.value.loans.find { it.id == loanId }
+            if (currentLoan != null) {
+                val remaining = currentLoan.totalPayable - currentLoan.totalRepaid
+                if (amount > remaining) {
+                    messageFlow.value = "Repayment amount exceeds the remaining balance (${"%.2f".format(remaining)})."
+                    return@launch
+                }
             }
             val result = repository.addRepayment(loanId, amount)
             messageFlow.value = result.exceptionOrNull()?.message ?: "Repayment recorded."
